@@ -1,0 +1,44 @@
+---
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("blog");
+  return entries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { data: blog } = entry;
+const { Content } = await entry.render();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{blog.title}</title>
+  </head>
+  <body
+    class="bg-gray-100 text-gray-900 flex items-center justify-center min-h-screen"
+  >
+    <div class="bg-white rounded-xl border p-8">
+      <h1 class="text-4xl font-bold mb-4 text-center text-blue-700">
+        {blog.title}
+      </h1>
+      <h2 class="text-lg font-medium mb-6 text-center text-gray-600">
+        {blog.author}, {blog.publishDate.toLocaleDateString()}
+      </h2>
+      <div class="prose lg:prose-xl max-w-none">
+        <Content />
+      </div>
+      <div class="flex items-center justify-center mt-5">
+        <a href="/" class="text-gray-400 hover:underline text-xl font-medium">
+          Back to Index page {"-->"}
+        </a>
+      </div>
+    </div>
+  </body>
+</html>
