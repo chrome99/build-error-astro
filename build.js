@@ -4,6 +4,8 @@ import path from "path";
 import { promisify } from "util";
 import { exec } from "child_process";
 
+const buildChunkSize = 100;
+
 const execAsync = promisify(exec);
 
 function chunkArray(array, chunkSize) {
@@ -36,15 +38,17 @@ async function main() {
   const allFiles = fs
     .readdirSync(sourceDir)
     .filter((file) => file.endsWith(".mdx") || file === "index.astro");
-  console.log(`Found ${allFiles.length} markdown files in ${sourceDir}.`);
+  console.log(`Found ${allFiles.length} mdx files in ${sourceDir}.`);
 
-  const fileChunks = chunkArray(allFiles, 5);
+  const fileChunks = chunkArray(allFiles, buildChunkSize);
   console.log(`Chunked files into ${fileChunks.length} groups.`);
 
   for (let i = 0; i < fileChunks.length; i++) {
     const chunk = fileChunks[i];
     const chunkNum = i + 1;
-    console.log(`Processing chunk ${chunkNum} with ${chunk.length} files.`);
+    console.log(
+      `Processing chunk ${chunkNum}/${fileChunks.length} with ${chunk.length} files.`
+    );
 
     await fse.emptyDir(blogDir);
     console.log(`Cleared ${blogDir}.`);

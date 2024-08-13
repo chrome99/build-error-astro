@@ -6,7 +6,7 @@
     "dev": "astro dev",
     "start": "astro dev",
     "generate": "node generateBlogs.js",
-    "build": "astro check && NODE_OPTIONS='--max-old-space-size=8192' npm run astro build",
+    "build": "node build.js",
     "preview": "astro preview",
     "astro": "astro"
   },
