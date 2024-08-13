@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import fs from "fs";
 import path from "path";
 
-const numberOfPosts = 30000;
+const numberOfPosts = 1000;
 
 function main() {
   const blogDir = "src/content/blog";
